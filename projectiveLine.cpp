@@ -8,6 +8,13 @@ int getPrimes(int* isPrime, int N);
 
 int gcd(int a, int b);
 
+struct coset{
+  int* rep;
+  int** values;
+};
+
+void initCoset(coset* newCoset, int c, int d, int N);
+
 int main(){
   int N = 0;
   cout << "Enter a value for N:" << endl;
@@ -60,6 +67,26 @@ int main(){
   cout << endl;
 
   //Next we are going to generate the coset representatives of the projective line
+  //We will simply find all unique cosets
+
+  //Tracks all unique cosets
+  coset*  cosets = new coset[int(cosetCount)];
+  for(int i = 0; i < cosetCount; i++){
+    initCoset(&cosets[i], 0, 0, N);
+  }
+
+  //Tracks which values have been represented
+  int** isUsed = new int*[N];
+  for(int i = 0; i < N; i++){
+    isUsed[i] = new int[N];
+  }
+
+  for(int i = 0; i < N; i++){
+    for(int j = 0; j < N; j++){
+      isUsed[i][j]=0;
+    }
+  }
+
 
 
 }
@@ -87,4 +114,21 @@ int gcd(int a, int b){
   if(b == 0)
     return a;
   return gcd(b,a%b);
+}
+
+//Sets the values of a new coset
+void initCoset(coset* newCoset, int c, int d, int N){
+  newCoset->rep = new int[2];
+  newCoset->rep[0] = c;
+  newCoset->rep[1] = d;
+  newCoset->values = new int*[N];
+  for(int i = 0; i < N; i++){
+    newCoset->values[i] = new int[N];
+  }
+
+  for(int i = 0; i < N; i++){
+    for(int j = 0; j < N; j++){
+      newCoset->values[i][j]=0;
+    }
+  }
 }
