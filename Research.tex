@@ -1,0 +1,91 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+
+\usepackage{mathtools}								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+
+%SetFonts
+
+%SetFonts
+
+
+\title{Distinguished Representatives of Binary Quadratic Forms Under Congruence Subgroups}
+\author{Beau Horenberger}
+%\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section*{Diamond and Shurman 1.2.3: Proof that  $[ SL_2(\mathbb{Z} ):\Gamma_0 (N) ] = N\prod_{p\vert N}(1+1/p)$.}
+
+\subsection*{a) Let $p$ be a prime and let $e$ be a positive integer. Show that $\vert SL_2(\mathbb{Z}/p^e \mathbb{Z})\vert = p^{3e}(1-1/p^2)$.}
+
+\textbf{Proof:}
+
+The proof is through induction.
+
+Base case: Let $e=1$. Then the map $GL_2(\mathbb{Z}/p\mathbb{Z})\rightarrow (\mathbb{Z}/p\mathbb{Z})^*$ via the determinant map has kernel $SL_2(\mathbb{Z}/p\mathbb{Z})$. By the first isomorphism theorem $GL_2(\mathbb{Z}/p\mathbb{Z})/SL_2(\mathbb{Z}/p\mathbb{Z})$ is isomorphic to $(\mathbb{Z}/p\mathbb{Z})^*$, and it can be calculated that $\vert GL_2(\mathbb{Z}/p\mathbb{Z}) \vert = (p^2-1)(p^2-p)$. Then it follows $\vert SL_2(\mathbb{Z}/p^e \mathbb{Z})\vert = p^{3}(1-1/p^2)$ in order for the isomorphism to be true.
+
+Inductive step: Now we consider $SL_2(\mathbb{Z}/p^{e+1}\mathbb{Z})\rightarrow SL_2(\mathbb{Z}/p^e\mathbb{Z})$, where $A\rightarrow A\bmod{p^e}$. This map is surjective, and the kernel has size ???.
+
+\subsection*{b) Show that $\vert SL_2(\mathbb{Z}/N \mathbb{Z})\vert=N^3\prod_{p\vert N} (1-1/p^2)$, so this is the index $[SL_2(\mathbb{Z}):\Gamma (N)]$.}
+
+\textbf{Proof:}
+
+This follows from the above and the Chinese Remainder Theorem.
+
+\subsection*{c) Show that the map $\Gamma_1 (N)\rightarrow (\mathbb{Z}/N\mathbb{Z})$ given by $\bigl( \begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr) \rightarrow b \bmod{N}$ surjects and has kernel $\Gamma (N)$.}
+
+\textbf{Proof:}
+
+For surjection, note that for all $x \in (\mathbb{Z}/N\mathbb{Z})$, we have  $\bigl( \begin{smallmatrix}1 & x\\ 0 & 1\end{smallmatrix}\bigr)\rightarrow x$. Thus, we have surjectivity.
+
+For the kernel, we suppose $\bigl( \begin{smallmatrix}1 & x\\ 0 & 1\end{smallmatrix}\bigr)\rightarrow 0$. Then $x\equiv 0 \bmod N$, so $\bigl( \begin{smallmatrix}1 & x\\ 0 & 1\end{smallmatrix}\bigr) \equiv \bigl( \begin{smallmatrix}1 & 0\\ 0 & 1\end{smallmatrix}\bigr) \bmod N$. Thus our kernel is $\Gamma (N)$. $\square$
+
+Note this also implies $\Gamma (N)$ is normal in $\Gamma_1 (N)$, and that $\Gamma_1 (N)/\Gamma (N)$ is isomorphic to $(\mathbb{Z}/N\mathbb{Z})$. Thus, $[\Gamma_1 (N):\Gamma (N)]=N$
+
+\subsection*{d) Show that the map $\Gamma_0 (N)\rightarrow (\mathbb{Z}/N\mathbb{Z})^*$ given by $\bigl( \begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr) \rightarrow d \bmod{N}$ surjects and has kernel $\Gamma_1 (N)$.}
+
+\textbf{Proof:}
+
+Let $d\in (\mathbb{Z}/N\mathbb{Z})^*$ be given. Then $\bigl( \begin{smallmatrix}0 & 0\\ 0 & d\end{smallmatrix}\bigr)\rightarrow d$. So we have surjection.
+
+For the kernel, let $\bigl( \begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr)\rightarrow 1$. Then $d\equiv 1 \bmod N$, so $\bigl( \begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr)\equiv \bigl( \begin{smallmatrix}a & b\\ 0 & 1\end{smallmatrix}\bigr)\bmod N$. But $ad\equiv 1\bmod N$, so $a\equiv 1 \bmod N$. So $\bigl( \begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr) \equiv \bigl( \begin{smallmatrix}1 & b\\ 0 & 1\end{smallmatrix}\bigr)\bmod N$. Then we have our kernel as $\Gamma_1 (N)$. $\square$
+
+By the logic in c), this also implies $[\Gamma_0 (N):\Gamma_1 (N)]=\phi(N)$
+
+\subsection*{e) Show that $[SL_2(\mathbb{Z}):\Gamma_0 (N)]=N\prod_{p\vert N} (1+1/p)$}
+
+\section*{Coset representatives for congruence subgroups computed algebraically}
+
+\subsection*{Claim: There is a bijection between the cosets of $\Gamma/\Gamma_0 (p^n)$ and the projective space $\mathbb{P}^1(\mathbb{Z}/p^n\mathbb{Z})$}
+
+\textbf{Proof:}
+
+First we will prove $\Gamma$ acts transitively on $\mathbb{P}^1(\mathbb{Z}/p^n\mathbb{Z})$, implying surjectivity. Then we will observe the stabilizer of $(0,1)\cdot(\mathbb{Z}/p^n\mathbb{Z})^*$ equals $\Gamma_0 (p^n)$, implying injectivity.
+
+\section*{TO DO:}
+
+Finish parts a), e) in section one.
+
+Finish proofing for Coset Representative section, describe method of generating representatives
+
+Program: Implement method of representative generation in findCoset function, use method in main
+
+\section*{Useful sources}
+
+Info on fundamental domain: http://www2.math.ou.edu/~kmartin/mfs/
+
+Calculations via fundamental domain: https://wstein.org/edu/Fall2003/252/lectures/09-19-03/index.html
+
+Even more on calculations of fundamental domains: https://wstein.org/edu/Fall2003/252/lectures/09-19-03/fundomain-alg.pdf
+
+Description of coset representatives for congruence subgroups: https://mathoverflow.net/questions/83858/cosets-representatives-of-congruence-subgroups (SOURCE???)
+
+More on Minkowski's reduction theorem: https://math.stackexchange.com/questions/2623427/problem-on-minkowskis-reduction-theory-of-positive-definite-matrix
+
+
+\end{document}  

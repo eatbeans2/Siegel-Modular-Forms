@@ -13,7 +13,9 @@ struct coset{
   int** values;
 };
 
-void initCoset(coset* newCoset, int c, int d, int N);
+void initCoset(coset** newCoset, int c, int d, int N);
+
+void findCoset(coset** curCoset, int N);
 
 int main(){
   int N = 0;
@@ -51,8 +53,8 @@ int main(){
   cout << "Number of cosets: " << cosetCount << endl;
 
   //Here we generate the group of units for N
-  int* units = new int[N+1];
-  for(int i = 0; i < N+1; i++){
+  int* units = new int[N];
+  for(int i = 0; i < N; i++){
     units[i]=0;
     if (gcd(i,N)==1)
       units[i]=1;
@@ -60,7 +62,7 @@ int main(){
 
   //Print the units
   cout << "Units: ";
-  for(int i = 0; i < N+1; i++){
+  for(int i = 0; i < N; i++){
     if(units[i] == 1)
       cout << i << " ";
   }
@@ -70,9 +72,10 @@ int main(){
   //We will simply find all unique cosets
 
   //Tracks all unique cosets
-  coset*  cosets = new coset[int(cosetCount)];
+  coset**  cosets = new coset*[int(cosetCount)];
   for(int i = 0; i < cosetCount; i++){
-    initCoset(&cosets[i], 0, 0, N);
+    cosets[i] = new coset;
+    initCoset(&(cosets[i]), 0, 0, N);
   }
 
   //Tracks which values have been represented
@@ -87,6 +90,13 @@ int main(){
     }
   }
 
+  //Here we begin exhausting members of the form (1,i) in an effort to find new cosets
+    //i is our u value, 
+  for(int i = 0; i < N; i++){
+    coset* curCoset = new coset;
+    initCoset((&curCoset), 1, i, N);
+
+  }
 
 
 }
@@ -117,18 +127,27 @@ int gcd(int a, int b){
 }
 
 //Sets the values of a new coset
-void initCoset(coset* newCoset, int c, int d, int N){
-  newCoset->rep = new int[2];
-  newCoset->rep[0] = c;
-  newCoset->rep[1] = d;
-  newCoset->values = new int*[N];
+void initCoset(coset** newCoset, int c, int d, int N){
+  (*newCoset)->rep = new int[2];
+  (*newCoset)->rep[0] = c;
+  (*newCoset)->rep[1] = d;
+  (*newCoset)->values = new int*[N];
   for(int i = 0; i < N; i++){
-    newCoset->values[i] = new int[N];
+    (*newCoset)->values[i] = new int[N];
   }
 
   for(int i = 0; i < N; i++){
     for(int j = 0; j < N; j++){
-      newCoset->values[i][j]=0;
+      (*newCoset)->values[i][j]=0;
     }
   }
+}
+
+void findCoset(coset** curCoset, int N){
+  //i is our u value, 
+  for(int j = 0; j < N; j++){
+    for(int k = 0; k < N; k++){
+    }
+  }
+  
 }
