@@ -1,4 +1,9 @@
 /*This program generates representatives for the projective line P^1(Z/NZ)*/
+/*
+NOTES: Initializing arrays in the fashion of the units array seems cleaner
+Must change coset values to treat them as matrices
+ */
+
 
 #include <iostream>
 
@@ -8,19 +13,31 @@ int getPrimes(int* isPrime, int N);
 
 int gcd(int a, int b);
 
-struct coset{
-  int* rep;
-  int** values;
+int* getUnits(int N);
+
+struct matrix{
+  int values[2][2];
 };
 
-void initCoset(coset** newCoset, int c, int d, int N);
+void printMatrix(matrix curMatrix);
 
-void findCoset(coset** curCoset, int N);
+void initCoset(matrix** newCoset, int c, int d, int N);
+
+void findCoset(matrix** curCoset, int N);
 
 int main(){
-  int N = 0;
-  cout << "Enter a value for N:" << endl;
-  cin >> N;
+  int N = 1;
+  int p = 0;
+  int n = 0;
+  cout << "Enter a prime:" << endl;
+  cin >> p;
+  cout << "Enter a power:" << endl;
+  cin >> n;
+
+  //Calculating our N value
+  for(int i = 0; i < n; i++){
+    N = N*p;;
+  }
 
   //Calculating the primes up to N. Index starts at 0 for convenience 
   int* primes = new int[N+1];
@@ -52,13 +69,9 @@ int main(){
 
   cout << "Number of cosets: " << cosetCount << endl;
 
-  //Here we generate the group of units for N
-  int* units = new int[N];
-  for(int i = 0; i < N; i++){
-    units[i]=0;
-    if (gcd(i,N)==1)
-      units[i]=1;
-  }
+  //Here we get the units
+  int* units;
+  units = getUnits(N);
 
   //Print the units
   cout << "Units: ";
@@ -69,35 +82,22 @@ int main(){
   cout << endl;
 
   //Next we are going to generate the coset representatives of the projective line
-  //We will simply find all unique cosets
+  //We know the form of these and can generate them
 
-  //Tracks all unique cosets
-  coset**  cosets = new coset*[int(cosetCount)];
-  for(int i = 0; i < cosetCount; i++){
-    cosets[i] = new coset;
-    initCoset(&(cosets[i]), 0, 0, N);
-  }
-
-  //Tracks which values have been represented
-  int** isUsed = new int*[N];
+  //We generate an array of coset matrices
+  //Additionally, we fill these with the known representatives (INCOMPLETE)
+  matrix**  cosets = new matrix*[int(cosetCount)];
   for(int i = 0; i < N; i++){
-    isUsed[i] = new int[N];
+    cosets[i] = new matrix;
+    initCoset(&(cosets[i]), 1, i, N);
+    printMatrix(*cosets[i]);
   }
 
-  for(int i = 0; i < N; i++){
-    for(int j = 0; j < N; j++){
-      isUsed[i][j]=0;
-    }
+  for(int i = 0;i < (N/p); i++){
+    cosets[i+N-1] = new matrix;
+    initCoset(&(cosets[i+N-1]),(i*p)%N, 1, N);
+    printMatrix(*cosets[i+N-1]);
   }
-
-  //Here we begin exhausting members of the form (1,i) in an effort to find new cosets
-    //i is our u value, 
-  for(int i = 0; i < N; i++){
-    coset* curCoset = new coset;
-    initCoset((&curCoset), 1, i, N);
-
-  }
-
 
 }
 
@@ -127,27 +127,34 @@ int gcd(int a, int b){
 }
 
 //Sets the values of a new coset
-void initCoset(coset** newCoset, int c, int d, int N){
-  (*newCoset)->rep = new int[2];
-  (*newCoset)->rep[0] = c;
-  (*newCoset)->rep[1] = d;
-  (*newCoset)->values = new int*[N];
-  for(int i = 0; i < N; i++){
-    (*newCoset)->values[i] = new int[N];
-  }
-
-  for(int i = 0; i < N; i++){
-    for(int j = 0; j < N; j++){
-      (*newCoset)->values[i][j]=0;
-    }
-  }
+void initCoset(matrix** newCoset, int c, int d, int N){
+  (*newCoset)->values[0][0] = 0;
+  (*newCoset)->values[1][1] = 0;
+  (*newCoset)->values[1][0] = c;
+  (*newCoset)->values[0][1] = d;
 }
 
-void findCoset(coset** curCoset, int N){
+void findCoset(matrix** curCoset, int N){
   //i is our u value, 
   for(int j = 0; j < N; j++){
     for(int k = 0; k < N; k++){
     }
   }
   
+}
+
+int* getUnits(int N){
+  //Here we generate the group of units for N
+  int* units = new int[N];
+  for(int i = 0; i < N; i++){
+    units[i]=0;
+    if (gcd(i,N)==1)
+      units[i]=1;
+  }
+
+  return units;
+}
+
+void printMatrix(matrix curMatrix){
+  cout <<  curMatrix.values[0][0] << " " << curMatrix.values[1][0] << endl << curMatrix.values[0][1] << " " << curMatrix.values[1][1] << endl << endl;
 }
