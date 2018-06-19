@@ -61,23 +61,40 @@ By the logic in c), this also implies $[\Gamma_0 (N):\Gamma_1 (N)]=\phi(N)$
 
 \section*{Coset representatives for congruence subgroups computed algebraically}
 
-\subsection*{Claim: There is a bijection between the cosets of $\Gamma/\Gamma_0 (p^n)$ and the projective space $\mathbb{P}^1(\mathbb{Z}/p^n\mathbb{Z})$}
+\subsection*{Claim: There is a bijection between the cosets of $\Gamma/\Gamma_0 (N)$ and the projective space $\mathbb{P}^1(\mathbb{Z}/N\mathbb{Z})$}
+
+First note that $\mathbb{P}^1(\mathbb{Z}/N\mathbb{Z})$ is defined as the equivalence classes of $P(\mathbb{Z}/N\mathbb{Z})=\{(a,b)\in (\mathbb{Z}/N\mathbb{Z})^2\vert \exists c,d \in (\mathbb{Z}/N\mathbb{Z}) \text{ so } ad-bc=1\}$ under the action of units, $\lambda (a,b)=(\lambda a, \lambda b)$. Such equivalence classes are denoted $(a:b)$
 
 \textbf{Proof:}
 
-First we will prove $\Gamma$ acts transitively on $\mathbb{P}^1(\mathbb{Z}/p^n\mathbb{Z})$, implying surjectivity. Then we will observe the stabilizer of $(0,1)\cdot(\mathbb{Z}/p^n\mathbb{Z})^*$ equals $\Gamma_0 (p^n)$, implying injectivity.
+Consider the map $SL_2(\mathbb{Z})/\Gamma_0 (N)\rightarrow \mathbb{P}^1(\mathbb{Z}/N\mathbb{Z})$ given by $\Gamma_0 (N)\bigl( \begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr)\rightarrow (c:d)$. Observe this is well-defined; if $\bigl( \begin{smallmatrix}A & B\\ C & D\end{smallmatrix}\bigr)\in \Gamma_0 (N)$ and $\bigl( \begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr)$ is a member of a coset, then $\bigl( \begin{smallmatrix}A & B\\ C & D\end{smallmatrix}\bigr)\bigl( \begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr)$ has values $Ca+Dc$ and $Cb+Dd$ in its bottom row, corresponding to $(cD:dD)$, since $C\equiv 0 \bmod{N}$. And since the determinant implies $D$ is a unit, we see that every member of a coset maps to the same equivalence class. Thus, we are well-defined.
 
-\subsection*{Generating Represntatives:}
+For surjection, simply give a $(c:d)$, and a corresponding $\bigl( \begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr)$ can be solved using the Euclidean algorithm.
 
-The current method for generating representatives for $N=p^n$will involve generating cosets for all members of the form $(1,u)$ and $(1,pu)$ and eliminating redundancies. There may be room for optimizations to come. Proofing to come soon
+For injection, we want to show that if two matrices map to the same equivalence class, then they belong to the same coset. This means we must show $\bigl( \begin{smallmatrix}A & B\\ C & D\end{smallmatrix}\bigr)\rightarrow (C:D)$ and $\bigl( \begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr)\rightarrow (c:d)=(C:D)$ implies $\bigl( \begin{smallmatrix}A & B\\ C & D\end{smallmatrix}\bigr)\bigl( \begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr)^{-1}\in \Gamma_0 (N)$, or $(Cd-cD)\equiv 0\bmod{N}$. By the equality of equivalence classes, we have $c=\lambda C$ and $d=\lambda D$, so we have $(Cd-cD)\equiv(\lambda CD-\lambda CD)\equiv 0 \bmod{N}$, as desired. Thus, we have our bijection. $\square$
+
+\subsection*{Generating Representatives:}
+
+\textbf{Claim: } All members of the projective line $\mathbb{P}^1(\mathbb{Z}/p^n\mathbb{Z})$, with $p$ a prime and $n$ a natural number, of the form $(1:u)$ where $u=0,1,..,p^{n}-1$ and $pu, 1$ where $u=0,1,p^{n-1}-1$ represent different equivalence classes.
+
+\textbf{Proof:}
+
+Suppose $(1:u)=(1:u')$. then $u\equiv\lambda u' \bmod{N}$ and $1\equiv\lambda 1 \bmod{N}$. Thus $\lambda=1,N$, but this implies $u'=u$. Thus, all members where $u\neq u'$ are distinct.
+
+Similarly, all $(pu, 1)$ are distinct.
+
+Then suppose $(1:u)=(pu':1)$. So $1\equiv \lambda pu' \bmod{N}$ and $1\equiv \lambda u \bmod{N}$ Then $pu'\equiv \lambda^{-1} \equiv u \bmod{N}$, and thus $pu'$ is a unit, which is a contradiction. Thus, $(1:u)\neq(pu':1)$. $\square$
+
+Further, note that for $p^n$ the quantity of these distinct equivalence classes is exactly the number of equivalence classes (verified using our bijection and the first part of this paper).
+
+Thus, we have a method for computing coset representatives of $\Gamma/\Gamma_0 (N)$
+
 
 \section*{TO DO:}
 
 Finish parts a), e) in section one.
 
-Finish proofing for Coset Representative section, describe method of generating representatives
-
-Program: Implement method of representative generation in findCoset function, use method in main
+Program: Implement Euclidean algorithm and matrix operations. Decide on overarching format (.h files etc for modularity with future additions)
 
 \section*{Useful sources}
 
@@ -90,6 +107,8 @@ Even more on calculations of fundamental domains: https://wstein.org/edu/Fall200
 Description of coset representatives for congruence subgroups: https://mathoverflow.net/questions/83858/cosets-representatives-of-congruence-subgroups (SOURCE???)
 
 More on Minkowski's reduction theorem: https://math.stackexchange.com/questions/2623427/problem-on-minkowskis-reduction-theory-of-positive-definite-matrix
+
+HUGELY RELEVANT BOOK: Modular forms: A classical and computational introduction, Kilford
 
 
 \end{document}  
