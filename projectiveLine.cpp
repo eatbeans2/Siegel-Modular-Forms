@@ -1,7 +1,12 @@
 /*This program generates representatives for the projective line P^1(Z/NZ)*/
 /*
-NOTES: Initializing arrays in the fashion of the units array seems cleaner
-Must change coset values to treat them as matrices
+NOTE: Initializing arrays in the fashion of the units array seems cleaner (do this for other things)
+
+NOTE: Counting cosets by calculating primes is super expensive and unnecessary, but a nice validation during the testing phase
+
+TO DO:
+Create matrix operation functions
+Plan for multiple files in the future (How to organize matrice funcs etc)
  */
 
 
@@ -15,6 +20,9 @@ int gcd(int a, int b);
 
 int* getUnits(int N);
 
+void eucAlg(int a, int b, int* x, int*y);
+
+//NOTE: Matrices are rowsxcolumns
 struct matrix{
   int values[2][2];
 };
@@ -69,6 +77,7 @@ int main(){
 
   cout << "Number of cosets: " << cosetCount << endl;
 
+  /*
   //Here we get the units
   int* units;
   units = getUnits(N);
@@ -80,6 +89,8 @@ int main(){
       cout << i << " ";
   }
   cout << endl;
+  */
+
 
   //Next we are going to generate the coset representatives of the projective line
   //We know the form of these and can generate them
@@ -127,11 +138,23 @@ int gcd(int a, int b){
 }
 
 //Sets the values of a new coset
+//Solve remaining spaces w/ Euclid's alg
 void initCoset(matrix** newCoset, int c, int d, int N){
-  (*newCoset)->values[0][0] = 0;
-  (*newCoset)->values[1][1] = 0;
+
+  int a=0, b=0;
+
+  //Switched to make plugging in easier
+  eucAlg(c, d, &b, &a);
+
+  //Note: (1,u) case requires b to be negative one, where thiis returns one
+  //So we fix this:
+  if(d != 1)
+    b=N-1;
+
+  (*newCoset)->values[0][0] = a;
+  (*newCoset)->values[1][1] = d;
   (*newCoset)->values[1][0] = c;
-  (*newCoset)->values[0][1] = d;
+  (*newCoset)->values[0][1] = b;
 }
 
 void findCoset(matrix** curCoset, int N){
@@ -156,5 +179,23 @@ int* getUnits(int N){
 }
 
 void printMatrix(matrix curMatrix){
-  cout <<  curMatrix.values[0][0] << " " << curMatrix.values[1][0] << endl << curMatrix.values[0][1] << " " << curMatrix.values[1][1] << endl << endl;
+  cout <<  curMatrix.values[0][0] << " " << curMatrix.values[0][1] << endl << curMatrix.values[1][0] << " " << curMatrix.values[1][1] << endl << endl;
+}
+
+void eucAlg(int a, int b, int* x, int* y){
+
+  if(a == 0){
+    *x = 0;
+    *y = 1;
+    return;
+  }
+
+  int nextX, nextY;
+
+  eucAlg(b%a, a, &nextX, &nextY);
+
+  *x = nextY - (b/a)*nextX;
+  *y = nextX;
+
+  return;
 }
