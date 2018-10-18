@@ -1,0 +1,207 @@
+\documentclass[11pt, oneside]{amsart}
+\usepackage{geometry, fullpage}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}	
+\usepackage{amssymb}
+\usepackage{amsmath}
+			% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage[normalem]{ulem}
+
+%SetFonts
+
+%SetFonts
+
+
+\title{SURF Research Proposal:\\ Calculating Siegel Modular Forms}
+\author{Beau Horenberger}
+%\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\begin{abstract}
+
+The aim of this research project is to build a code base for calculating Siegel modular forms of paramodular level N. Siegel modular forms have Fourier expansions indexed by binary quadratic forms. Thus, the first step in representing Siegel modular forms is to identify and calculate good representatives for appropriate equivalence classes of these binary quadratic forms. This is the essential problem that will be solved in the course of this research. This code base will have practical use for further research in Number Theory, specifically in verifying examples of the paramodular conjecture. The resultant objects also have applications to hyperelliptic curve cryptography. The project will be mentored by Jennifer Johnson-Leung, who will use this computational procedure for further research. 
+
+\end{abstract}
+
+\section{Background}
+
+Periodicity is an important notion in mathematics. For example, the function $f(x)=sin(x)$ has the same behaviors on $x\in[0,2\pi )$ as any other domain $x\in[2\pi k,2\pi (k+1) ),k\in\mathbb{Z}$, and thus this greatly simplifies our discussion of the function's behaviors. The notion of periodicity can be extended to more interesting functions as well. For example, consider elliptic functions. Elliptic functions are periodic in two directions and meromorphic (meaning we have the property of infinite differentiability except at a set of isolated points). The two dimensions of periodicity form a lattice which has a useful symmetry similar to $f(x)=sin(x)$ in one dimension. For information on elliptic functions, see \cite{Armitage}.
+
+One-dimensional symmetry can be defined succinctly. Let $f$ be a periodic function with period $P$. Then $\forall x\in D$, with $D$ the domain of $f$, and $\forall n\in \mathbb{Z}$, we have
+
+$f(x+nP)=f(x)$
+
+Modular forms are functions which are not only periodic, but have symmetries coming from the modular group. The modular group, $\Gamma$, is the group of integral linear fractional transformations of the complex upper half plane (complex numbers with complex parts greater than or equal to zero) onto itself. We consider these transformations as matrices, $M$, with mappings as follows:
+\[
+M=
+\begin{bmatrix}
+
+\alpha &	\beta \\
+\gamma & \delta
+
+\end{bmatrix}
+\]
+$$\text{where }\alpha\delta-\gamma\beta=1$$
+
+\[
+z \mapsto \frac{\alpha z + \beta}{\gamma z + \delta}
+\]
+
+The operation on these transformations is composition. Note that this set of matrices is isomorphic to $SL(2, \mathbb{Z})$.  For references on the modular group, see \cite{Stein}.
+
+A modular form of weight $k$ is a function $f$ on the upper-half plane, $H$, satisfying three conditions:
+
+\begin{enumerate}
+	\item $f$ is holomorphic (and thus infinitely differentiable) on $H$
+	\item $\forall z \in H$ and for all matrices in $SL(2, \mathbb{Z})$,
+	$$f\left( \frac{\alpha z + \beta}{\gamma z + \delta} \right) = (cz+d)^k f(z)$$
+	\item f is holomorphic as $z\rightarrow i\infty$
+\end{enumerate}
+
+Modular forms have been extensively studied in number theory and the relationship between modular forms and elliptic curves was the essential ingredient in the proof of Fermat's Last Theorem by Andrew Wiles. These functions captures the notion of periodicity. Consider 
+\[
+M=
+\begin{bmatrix}
+1 & 1 \\
+0 & 1
+\end{bmatrix}
+\]
+
+Then $f(z+1)=1$, and we have revealed the periodicity. This implies that these modular forms have Fourier expansions,
+
+$$f(z)=\sum_{n\geq 0} a_n e^{2\pi i n z} = \sum_{n\geq 0} a_n q^n$$
+
+Notice that this Fourier expansion is indexed by the natural numbers. Computationally, a modular form is represented as a function from the natural numbers to the complex numbers. In other words, it is represented as a list of Fourier coefficients. Many spaces for modular forms have been calculated. The aim of this work is to develop the algebraic and computational structures necessary to compute spaces of Siegel modular forms with paramodular level.
+
+Siegel modular forms are essentially multivariable modular forms, and they are conjecturally related to algebraic structures. Where modular forms map from the upper-half plane to the upper-half plane, Siegel modular forms map from the Siegel upper-half space, $$\mathcal{H}_g = \{\tau \in M_{g\times g}(\mathbb{C}) \vert \tau^T = \tau, Im(\tau) \text{ positive definite}\}$$to a complex vector space. These forms have Fourier expansions as well,
+
+$$F(Z) = \sum_{S\in A(N)^+}a(S)e^{2\pi itr(SZ)}$$
+
+for $Z\in \mathcal{H}_2$. Note the index of the sum is $A(N)^+$, the set of all $2\times 2$ matrices S of the form
+\begin{gather*}
+\begin{bmatrix}
+\alpha &	\beta \\
+\gamma & \delta
+\end{bmatrix}
+\quad \alpha \in N\mathbb{Z} ,\quad  \gamma \in \mathbb{Z} ,\quad \beta \in \frac{1}{2} \mathbb{Z} ,\quad \alpha > 0, \\
+\text{and } \alpha \gamma - \beta ^2 > 0
+\end{gather*}
+
+And $N$ is the paramodular level of $F$. For more on Siegel modular forms, see \cite{Van Der Geer}.
+
+Thus, in order to gather data about the Fourier expansions, it is necessary to understand the properties of the binary quadratic forms defined by $A(N)^+$ using methods as in \cite{Buell}.
+
+\section{Project Design}
+
+This project will be composed of four phases. First, theoretical work will be necessary in order to effectively represent the binary quadratic forms which index the Fourier expansion of Siegel modular forms. We will answer the questions:
+\begin{itemize}
+	\item Is there a distinguished representative among equivalent binary quadratic forms of discriminant $D$ and level $N$?
+	\item Given $N$ and $D$,  what is the class number of binary quadratic forms of level $N$ and discriminant $D$? 
+	\item How are these classes distributed among the classes of forms of level 1?
+\end{itemize}These questions were answered by Gauss for $N=1$, and we have studied the methods in Jennifer Johnson-Leung's Number Theory (Math 386) class. These methods will be adapted for $N>1$.
+
+Next, this information must be used to design a computer program in C++ which computes the terms of these Fourier expansions. This program must be efficient and be capable of retrieving any relevant information from the inputted data. Thus, functions must be outlined, algorithms considered and optimized, and memory structures must be designed in order to achieve these goals. This will draw heavily on my background in Computer Science, as in Computer Science I and II, and in Theory of Computation.
+
+Once the design phase is complete, the next step is implementation. The code must be created and debugged until it runs smoothly and reliably. This process will involve thoroughly documenting code and ensuring as many bugs are removed as possible. It should also be ensured that this code is compatible with as many different systems as can be managed.
+
+Finally, the code will be applied to the problem of generating Siegel modular forms with the intent of solving mathematical problems. New Fourier expansions can be generated using existing Siegel modular forms, which is a future research interest. The papers cited in \cite{JR1, JR2} describe the methodologies that will be used to generate new examples. This program will be valuable for any mathematicians investigating problems in the field of abelian surfaces or modular forms within number theory.
+
+\pagebreak
+
+\section{Timeline}
+
+\begin{enumerate}
+
+\item \textbf{Weeks 1-2:}
+
+\begin{enumerate}
+
+\item Develop the theoretical framework for Siegel modular forms of paramodular level and the binary quadratic forms that index their Fourier Coefficients.
+\item Build conceptual algorithms for processing binary quadratic forms.
+
+\end{enumerate}
+\item \textbf{Weeks 3-4:} 
+
+\begin{enumerate}
+
+\item Design conceptual computer program. Algorithms, functions, classes, and memory structures should all be thoroughly detailed.
+
+\end{enumerate}
+
+\item \textbf{Weeks 5-8:}
+
+\begin{enumerate}
+
+\item Implement program in C++. Create and document code.
+\item Debug until the program is bug free. Additionally, attempt to make the program as versatile as possible across platforms.
+\item Build database for storing examples of Siegel modular forms and input existing examples from \cite{LMFDB}.
+
+\end{enumerate}
+
+\item \textbf{Weeks 8-10:}
+
+\begin{enumerate}
+
+\item Calculate new examples of Siegel modular forms of paramodular level using \cite{JR1, JR2}.
+\item Prepare documentation for project so the program can be used by other researchers.
+\item Prepare presentations for UIdaho Undergraduate Research Symposium and other venues.
+
+\end{enumerate}
+
+\end{enumerate}
+
+\pagebreak
+
+\begin{thebibliography}{XXXX}
+	
+\bibitem[Arm]{Armitage} {Armitage, J., \& Eberlein, W.} {\em Elliptic functions}, Cambridge: Cambridge University Press, 2009.
+
+\bibitem[Buell]{Buell} {Buell, D. A.} {\em Binary quadratic forms: Classical theory and modern computations}, Berling: Springer, 1989.
+
+\bibitem[JR1]{JR1}{J. Johnson-Leung and B. Roberts,} {\em Siegel modular forms of degree two attached to Hilbert modular forms}, Journal of Number Theory  132.4, (2012) 543--564.
+
+\bibitem[JR2]{JR2}{J. Johnson-Leung and B. Roberts,} {\em Fourier coefficients for twists of Siegel paramodular forms}, J. 
+Ramanujuan Math Soc. 32,  (2017) 101--119 .
+\bibitem[LMFDB]{LMFDB}{The LMFDB Collaboration}, {\em The L-functions and Modular Forms Database}, \texttt{http://www.lmfdb.org}, 2018
+\bibitem[Stein]{Stein} {Stein, W. A.} {\em Modular Forms: A Computational Approach}, Retrieved from https://wstein.org/books/modform/stein-modform.pdf
+
+\bibitem[Van]{Van Der Geer} {Van Der Geer, G.} {\em Siegel Modular Forms}, Retrieved from https://https://arxiv.org/pdf/math/0605346.pdf
+
+
+
+
+\end{thebibliography}
+
+\pagebreak
+\section{Budget}
+
+\begin{enumerate}
+
+\item Stipend: \$4000
+
+\item Cost for UI Undergraduate Research Symposium Presentation: \$75
+
+\item Travel expenses for presenting research at the Joint Meetings of the American Mathematical Society and the Mathematical Association of America, in Batimore, MD, January 2019:
+\begin{enumerate}
+
+\item Flight to Baltimore, round trip: \$500
+
+\item Hotel for 3 nights:\$300
+
+\item Per Diem: \$125
+
+\end{enumerate}
+
+\end{enumerate}
+
+Total expenses (sans stipend):
+
+\$1000
+
+\end{document}  
